@@ -7,7 +7,6 @@ class Board
     @arr = Array.new(8," ") { Array.new(8," ")}
     @arr = set_pieces(@arr)
   end
-  #u2659
   def set_pieces(arr)
     arr[0][0]="\u2656"
     arr[0][1]="\u2658"
@@ -51,10 +50,20 @@ class Board
     edges_arr = [j[0] - i[0],j[1] - i[1]]
     if self_arr[i[0]][i[1]] == WhitePawn.new().image
       pawn_arr = WhitePawn.new.edges
+      if i[0]==6
+        pawn_arr.push([-2,0])
+        swap_pos(pawn_arr,edges_arr,self_arr,i,j)
+      else
       swap_pos(pawn_arr,edges_arr,self_arr,i,j)
+      end
     elsif self_arr[i[0]][i[1]] == BlackPawn.new().image
       pawn_arr = BlackPawn.new.edges
+      if i[0]==1
+        pawn_arr.push([2,0])
+        swap_pos(pawn_arr,edges_arr,self_arr,i,j)
+      else
       swap_pos(pawn_arr,edges_arr,self_arr,i,j)
+      end
     end
   end
 
