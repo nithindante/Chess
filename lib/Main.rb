@@ -26,7 +26,12 @@ def source_check(chess_board,player_cell)
   case player_cell
     when Player1
       if second_input[0]==3
+      if first_input[0]==1
       chess_board.move(first_input, second_input)
+      else
+        p "Incorrect Position!! Please enter a valid position"
+          source_check(chess_board,player_cell)
+      end
       elsif Player1.colour == "B"
         unless black_pawn.edges.include? edges_arr
           p "Incorrect Position!! Please enter a valid position"
@@ -55,12 +60,12 @@ def source_check(chess_board,player_cell)
         if first_input[0]==6
         chess_board.move(first_input, second_input)
         else
-          p "Incorrect Position!! Please enter a 1st valid position"
+          p "Incorrect Position!! Please enter a  valid position"
           source_check(chess_board,player_cell)
         end
       elsif Player2.colour == "B"
         unless black_pawn.edges.include? edges_arr
-          p "Incorrect Position!! Please enter a 1st valid position"
+          p "Incorrect Position!! Please enter a  valid position"
           source_check(chess_board,player_cell)
         end
         unless chess_board.arr[first_input[0]][first_input[1]].match(/[\u{2654}-\u{2659}]/)
