@@ -22,12 +22,16 @@ def source_check(chess_board,player_cell)
   p "Please enter #{player_cell.name}'s destination cell"
   second_input = [gets.chomp.to_i, gets.chomp.to_i]
   edges_arr = [second_input[0] - first_input[0],second_input[1] - first_input[1]]
-  p player_cell
   case player_cell
     when Player1
       if second_input[0]==3
+        if first_input[0]==1
       if first_input[0]==1
       chess_board.move(first_input, second_input)
+        else
+          p "Incorrect Position!! Please enter a valid position"
+          source_check(chess_board,player_cell)
+        end
       else
         p "Incorrect Position!! Please enter a valid position"
           source_check(chess_board,player_cell)
