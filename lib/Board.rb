@@ -68,17 +68,10 @@ class Board
   end
 
   def swap_pos(pawn_arr,edges_arr,self_arr,i,j)
-    p edges_arr
-    p pawn_arr
     if pawn_arr.include?edges_arr
-       p "kundi"
-      # p i
-      # p j
       temp = self_arr[i[0]][i[1]]
       self_arr[j[0]][j[1]] = temp
       self_arr[i[0]][i[1]] = " "
-      p self_arr
-      p "fart"
       return self_arr
     end
   end
