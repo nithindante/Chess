@@ -97,7 +97,6 @@ class Board
     arr_diff = calculate_vertices(source_cell, destination_cell)
     return 'Invalid selection for source cell, Please try once again' if invalid_move?(source_cell)
     return 'Illegal move, Please try once again' if check_pieces_between?(source_cell, destination_cell)
-
     if get(source_cell).valid_edges?(arr_diff)
       place(destination_cell, get(source_cell))
       place(source_cell, ' ')
@@ -106,53 +105,77 @@ class Board
     end
   end
 
-
-
   def check_pieces_between?(source_cell,destination_cell)
     source_piece = get(source_cell).class.to_s.split("::").last
     return false if source_piece.include? 'Knight'
-
     case source_piece
-    when  "BlackRook"
-      if column(destination_cell) - column(source_cell) == 1
-        return false
-      end
-      if column(destination_cell) - column(source_cell) == 0
-        #j = column(destination_cell)
-        check_column(row(source_cell),row(destination_cell))
-      elsif row(destination_cell) - row(source_cell) == 0
-        i = 8 -row(destination_cell)
-        for j in column(source_cell)+1..column(destination_cell)+1
-          p arr[i][j]
-          return true if arr[i][j] != " "
-        end
-        false
-      end
-    when "WhiteRook"
-      if column(destination_cell) - column(source_cell) == 1
-        return false
-      end
-      if column(destination_cell) - column(source_cell) == 0
-       # j = column(destination_cell)
-      check_column(row(source_cell), row(destination_cell))
-      elsif row(destination_cell) - row(source_cell) == 0
-        i = 8 - row(destination_cell)
-        for j in column(source_cell)+1..column(destination_cell)
-          return true if arr[i][j] != " "
-        end
-      end
+    when 'BlackRook'
+      check_blackrook(source_cell, destination_cell)
+    when 'WhiteRook'
+      check_whiterook(source_cell, destination_cell)
+    end
+  end
+
+  def check_blackrook(source_cell, destination_cell)
+    if (column(destination_cell) - column(source_cell)).zero?
+      check_column_black(source_cell, destination_cell)
+    elsif (row(destination_cell) - row(source_cell)).zero?
+      check_rows_black(source_cell, destination_cell)
+    end
+  end
+
+  def check_whiterook(source_cell, destination_cell)
+    if (column(destination_cell) - column(source_cell)).zero?
+      check_column_white((source_cell), (destination_cell))
+    elsif (row(destination_cell) - row(source_cell)).zero?
+      check_rows_white(source_cell,destination_cell)
     end
   end
 
 
-  def check_column (source,destination)
-    arr = (source..destination )
-    arr.each do |element|
-      if element != ' '
-        false
+  def check_column_black(source, destination)
+    i = column(source)
+    arr = row(source)..(row(destination))
+    for j in arr do
+      if self.arr[i][j] != " "
+        return true
       end
     end
-    true
+    false
+  end
+
+  def check_column_white(source, destination)
+    i = column(source)
+    arr = (row(source).downto(row(destination))).to_a
+    for j in arr do
+      p self.arr[i][j]
+      if self.arr[i][j] != " "
+        return true
+      end
+    end
+    false
+  end
+
+  def check_rows_white(source, destination)
+    i = row(source)
+    arr = (column(source)+1..column(destination))
+    for j in arr do
+      if self.arr[i][j] != " "
+        return true
+      end
+    end
+    false
+  end
+
+  def check_rows_black(source, destination)
+    i = row(destination)
+    arr = (column(source)+1..column(destination))
+    for j in arr do
+      if self.arr[i][j] != " "
+        return true
+      end
+    end
+    false
   end
   def calculate_vertices(source_cell, destination_cell)
     source_column = column(source_cell)
@@ -169,6 +192,6 @@ class Board
   end
 
   def row(cell)
-    cell.to_s.chars[1].to_i
+   8 - cell.to_s.chars[1].to_i
   end
 end

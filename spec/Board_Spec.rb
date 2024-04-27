@@ -36,24 +36,29 @@ end
 
   it 'Will move a knight from one cordinate to other ' do
     board = Board.with_setup
-    board.move(:b2, :a3)
-    board.move(:a1, :b1)
-    expect(board.get(:b1).image).to eq(Piece::WhiteRook.new(:white).image)
+    board.move(:b8, :a6)
+    expect(board.get(:a6).image).to eq(Piece::BlackKnight.new(:black).image)
   end
 
   it ' will return a error message if the source cell is vacant' do
     board = Board.with_setup
-    expect(board.move(:b3,:a5)).to eq("Invalid selection for source cell, Please try once again")
+    expect(board.move(:b5,:a5)).to eq("Invalid selection for source cell, Please try once again")
   end
 
   it 'will move a rook from one cordinate to other' do
     board = Board.with_setup
-    board.move(:b8, :a6)
-    expect(board.move(:a8, :c8)).to eq('Illegal move, Please try once again')
+    board.move(:b1, :a3)
+    board.move(:a1, :b1)
+    expect(board.get(:b1).image).to eq(Piece::WhiteRook.new(:white).image)
   end
 
-  it " will throw a error message when rook is moved illegaly" do
+  it " will throw a error message when rook is moved to a alredy occupied cell" do
     board = Board.with_setup
-    expect(board.move(:a8,:a4)).to eq("Illegal move, Please try once again")
+    expect(board.move(:a1,:a2)).to eq("Illegal move, Please try once again")
+  end
+
+  it " will throw a error message when there is a obstacle in between" do
+    board = Board.with_setup
+    expect(board.move(:a1,:a4)).to eq("Illegal move, Please try once again")
   end
 end
