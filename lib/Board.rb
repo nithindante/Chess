@@ -106,74 +106,55 @@ class Board
   end
 
   def check_pieces_between?(source_cell,destination_cell)
-    source_piece = get(source_cell).class.to_s.split("::").last
+    source_piece = get(source_cell).class.to_s.split('::').last
     return false if source_piece.include? 'Knight'
+
     case source_piece
     when 'BlackRook'
       check_blackrook(source_cell, destination_cell)
     when 'WhiteRook'
       check_whiterook(source_cell, destination_cell)
+    when 'BlackPawn'
+       false
     end
   end
 
   def check_blackrook(source_cell, destination_cell)
     if (column(destination_cell) - column(source_cell)).zero?
-      check_column_black(source_cell, destination_cell)
+      check_columns(source_cell, source_cell, destination_cell)
     elsif (row(destination_cell) - row(source_cell)).zero?
-      check_rows_black(source_cell, destination_cell)
+      check_rows(destination_cell, source_cell, destination_cell)
     end
   end
 
   def check_whiterook(source_cell, destination_cell)
     if (column(destination_cell) - column(source_cell)).zero?
-      check_column_white((source_cell), (destination_cell))
+      check_columns(source_cell, source_cell, destination_cell)
     elsif (row(destination_cell) - row(source_cell)).zero?
-      check_rows_white(source_cell,destination_cell)
+      check_rows(source_cell, source_cell, destination_cell)
     end
   end
 
-
-  def check_column_black(source, destination)
-    i = column(source)
-    arr = row(source)..(row(destination))
-    for j in arr do
-      if self.arr[i][j] != " "
-        return true
-      end
+  def check_columns(cell,source, destination)
+    i = column(cell)
+    if row(source) - row(destination) > 0
+      arr = (row(source).downto(row(destination))).to_a
     end
-    false
-  end
-
-  def check_column_white(source, destination)
-    i = column(source)
     arr = (row(source).downto(row(destination))).to_a
     for j in arr do
-      p self.arr[i][j]
-      if self.arr[i][j] != " "
-        return true
-      end
+      return true if self.arr[i][j] != " "
     end
     false
   end
 
-  def check_rows_white(source, destination)
-    i = row(source)
-    arr = (column(source)+1..column(destination))
-    for j in arr do
-      if self.arr[i][j] != " "
-        return true
-      end
+  def check_rows(cell,source,destination)
+    i = row(cell)
+    if column(source) - column(destination) > 0
+      arr = ((column(source)+1).downto(column(destination))).to_a
     end
-    false
-  end
-
-  def check_rows_black(source, destination)
-    i = row(destination)
-    arr = (column(source)+1..column(destination))
+      arr = (column(source)+1..column(destination))
     for j in arr do
-      if self.arr[i][j] != " "
-        return true
-      end
+      return true if self.arr[i][j] != " "
     end
     false
   end

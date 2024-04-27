@@ -16,6 +16,8 @@ class Piece
 
   def valid_edges?(arr_diff)
     arr = edges
+    p edges
+    p arr_diff
     arr.each do |element|
       if element.length == 2 && element == arr_diff
         return true
@@ -28,7 +30,7 @@ class Piece
 
   class WhitePawn < Piece
     def edges
-      [[-1, 0], [-1, -1], [-1, 1]]
+      [[1, 1], [0, 1], [-1, 1]]
     end
 
     def image
@@ -38,7 +40,7 @@ class Piece
 
   class BlackPawn < Piece
     def edges
-      [[1, 0], [1, -1], [1, 1]]
+      [[0, -1], [-1, -1], [1, -1]]
     end
 
     def image
