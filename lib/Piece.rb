@@ -16,8 +16,6 @@ class Piece
 
   def valid_edges?(arr_diff)
     arr = edges
-    p edges
-    p arr_diff
     arr.each do |element|
       if element.length == 2 && element == arr_diff
         return true
@@ -30,7 +28,7 @@ class Piece
 
   class WhitePawn < Piece
     def edges
-      [[1, 1], [0, 1], [-1, 1]]
+      [[0, 1]]
     end
 
     def image
@@ -40,7 +38,7 @@ class Piece
 
   class BlackPawn < Piece
     def edges
-      [[0, -1], [-1, -1], [1, -1]]
+      [[0, -1]]
     end
 
     def image
@@ -136,7 +134,11 @@ class Piece
 
   class WhiteBishop < Piece
     def edges
-      [[-2,-1],[-1,-2],[1,-2],[2,-1],[2,1],[1,2],[-1,2],[-2,1]]
+      [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],
+      [1,-1],[2,-2],[3,-3],[4,-4],[5,-5],[6,-6],[7,-7],
+      [-1,1],[-2,2],[-3,3],[-4,4],[-5,5],[-6,6],[-7,7],
+      [-1,-1],[-2,-2],[-3,-3],[-4,-4],[-5,-5],[-6,-6],[-7,-7]
+    ]
     end
 
     def image
@@ -146,7 +148,10 @@ class Piece
 
   class BlackBishop < Piece
     def edges
-      [[-2,-1],[-1,-2],[1,-2],[2,-1],[2,1],[1,2],[-1,2],[-2,1]]
+      [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],
+      [1,-1],[2,-2],[3,-3],[4,-4],[5,-5],[6,-6],[7,-7],
+      [-1,1],[-2,2],[-3,3],[-4,4],[-5,5],[-6,6],[-7,7],
+      [-1,-1],[-2,-2],[-3,-3],[-4,-4],[-5,-5],[-6,-6],[-7,-7]]
     end
 
     def image

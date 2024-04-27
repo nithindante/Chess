@@ -115,8 +115,21 @@ class Board
     when 'WhiteRook'
       check_whiterook(source_cell, destination_cell)
     when 'BlackPawn'
-       false
+       check_pawn(source_cell, destination_cell)
+    when 'WhitePawn'
+      check_pawn(source_cell, destination_cell)
+    when 'BlackBishop'
+      false
+    when 'WhiteBishop'
+      false
     end
+  end
+
+  def check_pawn(source_cell, destination_cell)
+    if self.get(destination_cell) != " "
+      return true
+    end
+    false
   end
 
   def check_blackrook(source_cell, destination_cell)
