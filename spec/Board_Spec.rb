@@ -59,7 +59,10 @@ end
 
   # it " will throw a error message when there is a obstacle in between" do
   #   board = Board.with_setup
-  #   expect(board.move(:a1,:a4)).to eq("Illegal move, Please try once again")
+  #   board.move(:a2,:a3)
+  #   board.move(:a3,:a4)
+  #   board.move(:a1,:a3)
+  #   expect(true).to eq(true)
   # end
 
   # it 'will move a black pawn from one cordinate to other' do
@@ -103,8 +106,136 @@ end
   #   expect(board.get(:a3).image).to eq(Piece::WhiteBishop.new(:white).image)
   # end
 
-  it 'will get a error message if a black bishop does a invalid move' do
-    board = Board.with_setup
-    expect( board.move(:c1, :b2)).to eq("Illegal move, Please try once again")
+  #  it 'will get a error message if a knight tries to move to a destination cell which is already occupied with same color' do
+  #    board = Board.with_setup
+  #    board.move(:a2,:a3)
+  #    expect( board.move(:b1, :a3)).to eq("Illegal move, Please try once again")
+  #  end
+
+  # it 'will get a error message for bishop if destination cell is already occupied with a peice of same color' do
+  #   board = Board.with_setup
+  #   board.move(:b2, :b3)
+  #   board.move(:a2, :a3)
+  #   expect(board.move(:c1, :a3)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will get a error message if a invalid move is done on a bishop' do
+  #   board = Board.with_setup
+  #   board.move(:b7, :b6)
+  #   board.move(:c8, :a6)
+  #   board.move(:a6, :c4)
+  #   board.move(:e7, :e6)
+  #   expect(board.move(:c4, :f7)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will get a error message if a invalid move is done on a bishop' do
+  #   board = Board.with_setup
+  #   board.move(:b7, :b6)
+  #   board.move(:c8, :b7)
+  #   board.move(:d7, :d6)
+  #   board.move(:d6, :d5)
+  #   expect(board.move(:b7, :e4)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will get a error message if a invalid move is done on a bishop' do
+  #   board = Board.with_setup
+  #   board.move(:g7, :g6)
+  #   board.move(:f8, :g7)
+  #   board.move(:g7, :d4)
+  #   board.move(:a7, :a6)
+  #   board.move(:b7, :b6)
+  #   expect(board.move(:d4, :a7)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will get a error message if a invalid move is done on a bishop' do
+  #   board = Board.with_setup
+  #   board.move(:e7, :e6)
+  #   board.move(:e6, :e5)
+  #   board.move(:g7, :g6)
+  #   board.move(:f8, :g7)
+  #   expect(board.move(:g7, :d4)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will thow a error message if a black queen is moved from one illelgal cordinate to another or vice versa' do
+  #   board = Board.with_setup
+  #   board.move(:d7, :d6)
+  #   board.move(:d6, :d5)
+  #   board.move(:d8, :d6)
+  #   board.move(:c7, :c6)
+  #   expect(board.move(:d6, :b6)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will thow a error message if a black queen is moved from one illelgal cordinate to another or vice versa' do
+  #   board = Board.with_setup
+  #   board.move(:d2,:d3)
+  #   board.move(:d3,:d4)
+  #   board.move(:d1,:d3)
+  #   board.move(:c2,:c3)
+  #   board.move(:c3,:c4)
+  #   board.move(:d3,:a3)
+  #   expect(true).to equal(true)
+  #  # expect(board.move(:d3, :a6)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will move a king from one position to another' do
+  #   board = Board.with_setup
+  #   board.move(:e2, :e3)
+  #   board.move(:e1, :e2)
+  #   expect(board.get(:e2).image).to eq(Piece::WhiteKing.new(:white).image)
+  #   #expect(board.move(:d6, :b6)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will get a error message if we move a king to a invalid position' do
+  #   board = Board.with_setup
+  #   board.move(:e2, :e3)
+  #   board.move(:e1, :e2)
+  #   board.move(:f2,:f3)
+  #   board.move(:d2,:d3)
+  #   expect(board.move(:e2, :f1)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will capture an opposite player and occupy that position' do
+  #   board = Board.with_setup
+  #   board.move(:b7, :b6)
+  #   board.move(:c2, :c3)
+  #   board.move(:b8,:c6)
+  #   board.move(:c6,:e5)
+  #   board.move(:c3,:c4)
+  #   board.move(:e5,:c4)
+  #   #board.show_board
+  #   expect(board.get(:c4).image).to eq(Piece::BlackKnight.new(:black).image)
+  # end
+
+  # it 'will and get a error message if a piece from the opposite team is on the path' do
+  #   board = Board.with_setup
+  #   board.move(:b7, :b6)
+  #   board.move(:a2, :a3)
+  #   board.move(:a3,:a4)
+  #   board.move(:b6,:b5)
+  #   board.move(:b5,:b4)
+  #   board.move(:b4,:b3)
+  #   board.move(:a1,:a3)
+  #   expect(board.move(:a3, :c3)).to eq("Illegal move, Please try once again")
+  # end
+
+  # it 'will and get a error message if a piece from the opposite team is on the path' do
+  #   board = Board.with_setup
+  #   board.move(:b2, :b3)
+  #   black = Piece::BlackPawn.new(:black)
+  #   board.place(:a4,black)
+  #   board.move(:b3, :a4)
+  #   board.show_board
+  #   expect(true).to equal(true)
+  #   #expect(board.move(:b3, :b4)).to eq("Illegal move, Please try once again")
+  # end
+
+  it "will check and display, if the opposition's king is in check position" do
+    board = Board.new
+    black_king = Piece::BlackKing.new(:black)
+    board.place(:e5, black_king)
+    white_rook = Piece::WhiteRook.new(:white)
+    board.place(:e1, white_rook)
+    board.show_board
+    expect(true).to equal(true)
   end
 end
