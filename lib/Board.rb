@@ -101,6 +101,7 @@ class Board
   end
 
   def check_pieces_between?(source_cell,destination_cell)
+
     source_piece = get(source_cell).class.to_s.split('::').last
     case source_piece
     when 'BlackRook'
@@ -250,5 +251,48 @@ class Board
 
   def row(cell)
    8 - cell.to_s.chars[1].to_i
+  end
+
+  def check(color)
+    sec_color = set_color(color)
+    pieces_arr, king_arr, pos_arr, differences_arr, edges_arr = [], [], [], [], []
+    arr.each_with_index do |row, i|
+       row.each_with_index do |cell, j|
+         cell_class = cell.to_s.split('::').last
+         if cell_class.include?("#{sec_color}King")
+           king_arr.concat([i, j])
+         elsif cell_class.include?("#{color}")
+           pos_arr.push([i, j])
+           pieces_arr.push(cell)
+         end
+       end
+    end
+
+    differences_arr = pos_arr.map do |element|
+       [element[0] - king_arr[0], element[1] - king_arr[1]]
+    end
+    edges_arr = pieces_arr.map(&:edges)
+    edges_arr.any? do |edges|
+       edges.any? do |vertices|
+         differences_arr.include?(vertices) && pos_arr.any? do |pieces|
+           desti_cell = cal_position(pieces)
+           arr_diff = calculate_vertices(desti_cell, cal_position(king_arr))
+           get(desti_cell).valid_edges?(arr_diff) && !check_pieces_between?(desti_cell, cal_position(king_arr))
+         end
+       end
+    end
+   end
+
+  def set_color(color)
+    if color == 'White'
+      'Black'
+    else
+      'White'
+    end
+  end
+  def cal_position(position)
+   row1 = 8 - position[0]
+   column1 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].to_a[position[1]]
+   (column1+row1.to_s).to_sym
   end
 end

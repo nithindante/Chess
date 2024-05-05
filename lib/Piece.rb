@@ -28,7 +28,7 @@ class Piece
 
   class WhitePawn < Piece
     def edges
-      [[0, 1]]
+      [[0, 1],[-1,1],[1,1]]
     end
 
     def image
@@ -67,31 +67,11 @@ class Piece
   end
 
   class WhiteRook < Piece
-    def edges(i = 0, j = 0)
-      self_arr = []
-      cal_edges(self_arr, -7, 0, :i)
-      cal_edges(self_arr, 0, 7, :i)
-      i = 0
-      j = 0
-      cal_edges(self_arr, -7, 0, :j)
-      cal_edges(self_arr, 0, 7, :j)
-    end
-
-    def cal_edges(self_arr, a, b, loop_var = :i)
-      arr = []
-      if loop_var == :i
-        j = 0
-        for i in a..b
-          arr.push([i, j])
-        end
-      elsif loop_var == :j
-        i = 0
-        for j in a..b
-          arr.push([i, j])
-        end
-      end
-      self_arr.push(arr)
-      self_arr.sort
+    def edges
+      [[-7,0],[-6,0],[-5,0],[-4,0],[-3,0],[-2,0],[-1,0],[0,0],
+      [0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],
+      [7,0],[6,0],[5,0],[4,0],[3,0],[2,0],[1,0],[0,0],
+      [0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[0,-7]]
     end
 
     def image
@@ -100,31 +80,11 @@ class Piece
   end
 
   class BlackRook < Piece
-    def edges(i = 0, j = 0)
-      self_arr = []
-      cal_edges(self_arr, -7, 0, :i)
-      cal_edges(self_arr, 0, 7, :i)
-      i = 0
-      j = 0
-      cal_edges(self_arr, -7, 0, :j)
-      cal_edges(self_arr, 0, 7, :j)
-    end
-
-    def cal_edges(self_arr, a, b, loop_var = :i)
-      arr = []
-      if loop_var == :i
-        j = 0
-        for i in a..b
-          arr.push([i, j])
-        end
-      elsif loop_var == :j
-        i = 0
-        for j in a..b
-          arr.push([i, j])
-        end
-      end
-      self_arr.push(arr)
-      self_arr.sort
+    def edges
+      [[-7,0],[-6,0],[-5,0],[-4,0],[-3,0],[-2,0],[-1,0],[0,0],
+      [0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],
+      [7,0],[6,0],[5,0],[4,0],[3,0],[2,0],[1,0],[0,0],
+      [0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[0,-7]]
     end
 
     def image

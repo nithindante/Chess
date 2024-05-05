@@ -231,11 +231,20 @@ end
 
   it "will check and display, if the opposition's king is in check position" do
     board = Board.new
-    black_king = Piece::BlackKing.new(:black)
-    board.place(:e5, black_king)
-    white_rook = Piece::WhiteRook.new(:white)
-    board.place(:e1, white_rook)
+    board.setup_board
+    board.move(:d7, :d6)
+    board.move(:e7, :e6)
+    board.move(:d2, :d3)
+    board.move(:d3, :d4)
+    board.move(:d6, :d5)
+    board.move(:e6, :e5)
+    board.move(:d4, :e5)
+    board.move(:d5, :d4)      
+    board.move(:d4, :d3)
+    board.move(:d3, :d2)
+    board.move(:e2, :e3)
+    board.move(:e1, :e2)
     board.show_board
-    expect(true).to equal(true)
+    expect(board.check("Black")).to eq(false)
   end
 end
