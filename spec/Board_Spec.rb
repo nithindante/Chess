@@ -229,22 +229,45 @@ end
   #   #expect(board.move(:b3, :b4)).to eq("Illegal move, Please try once again")
   # end
 
+  # it "will check and display, if the opposition's king is in check position" do
+  #   board = Board.new
+  #   board.setup_board
+  #   board.move(:d7, :d6)
+  #   board.move(:e7, :e6)
+  #   board.move(:d2, :d3)
+  #   board.move(:d3, :d4)
+  #   board.move(:d6, :d5)
+  #   board.move(:e6, :e5)
+  #   board.move(:d4, :e5)
+  #   board.move(:d5, :d4)
+  #   board.move(:d4, :d3)
+  #   board.move(:d3, :d2)
+  #   board.move(:e2, :e3)
+  #   board.move(:e1, :e2)
+  #   board.show_board
+  #   expect(board.check("Black")).to eq(false)
+  # end
+
   it "will check and display, if the opposition's king is in check position" do
     board = Board.new
-    board.setup_board
-    board.move(:d7, :d6)
-    board.move(:e7, :e6)
-    board.move(:d2, :d3)
-    board.move(:d3, :d4)
-    board.move(:d6, :d5)
-    board.move(:e6, :e5)
-    board.move(:d4, :e5)
-    board.move(:d5, :d4)      
-    board.move(:d4, :d3)
-    board.move(:d3, :d2)
-    board.move(:e2, :e3)
-    board.move(:e1, :e2)
+   # black_pawn = Piece::BlackPawn.new(:black)
+   # board.place(:c5,black_pawn)
+    black_king = Piece::BlackKing.new(:black)
+    board.place(:d5, black_king)
+    white_rook = Piece::WhiteRook.new(:white)
+    board.place(:d2, white_rook)
+    white_bishop = Piece::WhiteBishop.new(:white)
+    board.place(:h2, white_bishop)
+    white_knight = Piece::WhiteKnight.new(:white)
+    board.place(:b3, white_knight)
+    white_pawn = Piece::WhitePawn.new(:white)
+    board.place(:e2, white_rook)
+    board.place(:b5, white_pawn)
+    board.place(:f7, white_bishop)
+    board.place(:c3, white_pawn)
+    board.place(:f3, white_pawn)
     board.show_board
-    expect(board.check("Black")).to eq(false)
+    expect(board.checkmate("White")).to eq(true)
+    #expect(true).to equal(true)
   end
 end
