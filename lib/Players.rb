@@ -1,3 +1,6 @@
+require_relative 'Board'
+require_relative 'Piece'
+
 class Players
   attr_accessor :name,:colour
 
@@ -5,6 +8,5 @@ class Players
     @name = name
     @colour = colour
   end
-
 
 end

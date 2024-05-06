@@ -1,7 +1,7 @@
 require_relative 'Board'
-require_relative 'Game'
+require_relative 'Piece'
 require_relative 'Players'
-require_relative 'Pawn'
+
 
 def input_check
   p 'Please enter the color of first person (B/W)'
@@ -14,47 +14,19 @@ def input_check
   end
 end
 
-def move_player(i,j,player,pawn,first_input,second_input,chess_board,player_cell,pattern)
-  edges_arr = [second_input[0] - first_input[0],second_input[1] - first_input[1]]
-  unless pawn.edges.include? edges_arr
-    p "Incorrect Position!! Please enter a 2nd valid position"
-    input_method(i,j,player,chess_board,player_cell)
-    return
-  end
-  unless chess_board.arr[first_input[0]][first_input[1]].match(pattern)
-    p "Incorrect Position!! Please enter a 3rd valid position"
-    input_method(i,j,player,chess_board,player_cell)
+def enter_choices(color,board)
+  p 'Please enter the source cell for the move you wish to make'
+  source =  gets.chomp.to_sym
+  p 'Please enter the destination cell for the move you wish to make'
+  destination = gets.chomp.to_sym
+  unless board.get(source).to_s.split('::').last.include?"#{color}"
+    p "Invalid selection, Please try once again"
+    enter_choices(color,board)
   else
-    chess_board.move(first_input, second_input)
-  end
-end
-
-def input_method(i,j,player,chess_board,player_cell)
-  white_pawn = WhitePawn.new
-  black_pawn = BlackPawn.new
-  p "Please enter #{player_cell.name}'s source cell"
-  first_input = [gets.chomp.to_i, gets.chomp.to_i]
-  p "Please enter #{player_cell.name}'s destination cell"
-  second_input = [gets.chomp.to_i, gets.chomp.to_i]
-  if second_input[0] == i && first_input[0] == j
-      chess_board.move(first_input, second_input)
-  elsif player.colour == "B"
-    move_player(i,j,player,black_pawn,first_input,second_input,chess_board,player_cell,/[\u{2654}-\u{2659}]/)
-  elsif player.colour == "W"
-    move_player(i,j,player,white_pawn,first_input,second_input,chess_board,player_cell,/[\u{265A}-\u{265F}]/)
-  else
-    p "Incorrect Position!! Please enter a 1st valid position"
-    input_method(i,j,player,chess_board,player_cell)
-    return
-  end
-end
-
-def player_move(chess_board,player_cell)
-  case player_cell
-  when Player1
-    input_method(3,1,Player1,chess_board,player_cell)
-  when Player2
-    input_method(4,6,Player2,chess_board,player_cell)
+    if board.move(source, destination) == "Illegal move, Please try once again"
+      p "Invalid selection, Please try once again"
+      enter_choices(color,board)
+    end
   end
 end
 
@@ -67,12 +39,25 @@ when 'B'
 when 'W'
   Player2 = Players.new(gets.chomp, 'B')
 end
-chess_board = Board.new
-player_move(chess_board,Player1)
-player_move(chess_board,Player2)
-chess_board.show_board
-player_move(chess_board,Player1)
-player_move(chess_board,Player2)
-chess_board.show_board
-player_move(chess_board,Player1)
-chess_board.show_board
+board = Board.with_setup
+
+
+loop do
+  enter_choices("White",board)
+  board.show_board
+  if board.checkmate("White") == true
+    p 'White is the winner'
+     break
+  elsif board.checkmate("Black") == true
+      p 'Black is the winner'
+  end
+  enter_choices("Black",board)
+ board.show_board
+ if board.checkmate("Black") == true
+   p 'Black is the winner'
+   break
+  elsif board.checkmate("White") == true
+    p 'White is the winner'
+   break
+  end
+end

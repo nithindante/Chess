@@ -20,18 +20,18 @@ class Board
   end
 
   def setup_board
-    black_pawn = Piece::BlackPawn.new(:black)
-    white_pawn = Piece::WhitePawn.new(:white)
-    black_knight = Piece::BlackKnight.new(:black)
-    white_knight = Piece::WhiteKnight.new(:white)
-    black_rook = Piece::BlackRook.new(:black)
-    white_rook = Piece::WhiteRook.new(:white)
-    black_bishop = Piece::BlackBishop.new(:black)
-    white_bishop = Piece::WhiteBishop.new(:white)
-    black_queen = Piece::BlackQueen.new(:white)
-    white_queen = Piece::WhiteQueen.new(:white)
-    black_king = Piece::BlackKing.new(:black)
-    white_king = Piece::WhiteKing.new(:white)
+    black_pawn = Piece::BlackPawn.new(:Black)
+    white_pawn = Piece::WhitePawn.new(:White)
+    black_knight = Piece::BlackKnight.new(:Black)
+    white_knight = Piece::WhiteKnight.new(:White)
+    black_rook = Piece::BlackRook.new(:Black)
+    white_rook = Piece::WhiteRook.new(:White)
+    black_bishop = Piece::BlackBishop.new(:Black)
+    white_bishop = Piece::WhiteBishop.new(:White)
+    black_queen = Piece::BlackQueen.new(:White)
+    white_queen = Piece::WhiteQueen.new(:White)
+    black_king = Piece::BlackKing.new(:Black)
+    white_king = Piece::WhiteKing.new(:White)
     place(:a7, black_pawn)
     place(:b7, black_pawn)
     place(:c7, black_pawn)
@@ -87,7 +87,6 @@ class Board
 
   def invalid_move?(source_cell)
     return false unless get(source_cell) == ' '
-
     true
   end
 
@@ -277,6 +276,7 @@ class Board
          differences_arr.include?(vertices) && pos_arr.any? do |pieces|
            desti_cell = cal_position(pieces)
            arr_diff = calculate_vertices(desti_cell, cal_position(king_arr))
+
            if get(desti_cell).valid_edges?(arr_diff) && !check_pieces_between?(desti_cell, cal_position(king_arr))
             true
            end
@@ -298,41 +298,50 @@ class Board
    (column1+row1.to_s).to_sym
   end
 
-  def checkmate(color)
-    king_arr=[]
-    sum = 0
-    sum_2 = 0
-    sec_color = set_color(color)
+  def get_king(sec_color,king_arr)
     arr.each_with_index do |row, i|
       row.each_with_index do |cell, j|
         cell_class = cell.to_s.split('::').last
         if cell_class.include?("#{sec_color}King")
-            king = i,j
-            king_arr.concat([i, j])
+
+          king_arr.concat([i, j])
         end
       end
     end
+    end
+  def checkmate(color)
+    king_arr=[]
+    king= ''
+    sum = 0
+    second_sum = 0
+    sec_color = set_color(color)
+    get_king(sec_color, king_arr)
     new_pos = []
     king = self.get(cal_position(king_arr))
     edges_arr =  self.get(cal_position(king_arr)).edges
     edges_arr.each do |edge|
-      new_pos.push([edge[0] + king_arr[0],edge[1] + king_arr[1]])
+      if edge[0] + king_arr[0] <=7 && edge[1] + king_arr[1] <=7
+        new_pos.push([edge[0] + king_arr[0],edge[1] + king_arr[1]])
+      end
     end
     new_pos.each do |ele|
       if get(cal_position(ele))== " "
-        sum_2 = sum_2 + 1
-       place(cal_position(ele),king)
-       place(cal_position(king_arr)," ")
+        second_sum += 1
+        place(cal_position(ele),king)
+        place(cal_position(king_arr)," ")
         if self.check(color) == true
-          sum =sum + 1
+          sum += 1
         end
         place(cal_position(ele)," ")
+        place(cal_position(king_arr),king)
       end
     end
-    if sum_2 == sum
-      true
-    else
-      false
+    if second_sum!= 0 && sum !=0
+      if (second_sum == sum)
+        true
+      else
+        false
+      end
     end
   end
 end
