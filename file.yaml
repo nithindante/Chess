@@ -1,0 +1,77 @@
+---
+- - &3 !ruby/object:Piece::BlackRook
+    color: :Black
+  - &2 !ruby/object:Piece::BlackKnight
+    color: :Black
+  - &1 !ruby/object:Piece::BlackBishop
+    color: :Black
+  - !ruby/object:Piece::BlackQueen
+    color: :White
+  - !ruby/object:Piece::BlackKing
+    color: :Black
+  - *1
+  - *2
+  - *3
+- - &4 !ruby/object:Piece::BlackPawn
+    color: :Black
+  - *4
+  - *4
+  - *4
+  - *4
+  - *4
+  - *4
+  - *4
+- - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+- - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+- - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+- - " "
+  - &5 !ruby/object:Piece::WhitePawn
+    color: :White
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+  - " "
+- - *5
+  - " "
+  - *5
+  - *5
+  - *5
+  - *5
+  - *5
+  - *5
+- - &8 !ruby/object:Piece::WhiteRook
+    color: :White
+  - &7 !ruby/object:Piece::WhiteKnight
+    color: :White
+  - &6 !ruby/object:Piece::WhiteBishop
+    color: :White
+  - !ruby/object:Piece::WhiteQueen
+    color: :White
+  - !ruby/object:Piece::WhiteKing
+    color: :White
+  - *6
+  - *7
+  - *8

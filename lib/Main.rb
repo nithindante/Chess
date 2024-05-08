@@ -29,7 +29,13 @@ def enter_choices(color,board)
     end
   end
 end
-
+p 'Do you want to load the previous saved version (Y/N)'
+saved_version = gets.chomp.to_s
+if saved_version.downcase=="y"
+  demo = YAML.load(File.read("file.yaml"))
+  arr = demo[:arr]
+  p arr
+end
 p 'Please enter the first players name '
 Player1 = Players.new(gets.chomp,input_check)
 p 'Please enter the second players name'
@@ -50,6 +56,14 @@ loop do
      break
   elsif board.checkmate("Black") == true
       p 'Black is the winner'
+  end
+  p " Do you wish to save the game"
+  choice = gets.chomp.to_s
+  if choice == 'Y'
+    demo = board.arr
+    File.open("file.yaml","w") do |file|
+        file.write(demo.to_yaml)
+    end
   end
   enter_choices("Black",board)
  board.show_board

@@ -1,10 +1,17 @@
 require_relative "Game"
 require_relative "Piece"
+require 'yaml'
 
 class Board
   attr_accessor :arr
   def initialize
     @arr = Array.new(8," ") { Array.new(8," ")}
+  end
+
+  def to_yaml
+    YAML.dump({
+                board: @board
+              })
   end
 
   def self.with_setup
@@ -166,6 +173,8 @@ class Board
     end
     false
   end
+
+
 
   def check_northwest( source_cell, destination_cell)
     range = (row(source_cell) - row(destination_cell))
