@@ -1,121 +1,155 @@
 require_relative 'Board'
-require_relative 'Game'
+require_relative 'Piece'
 require_relative 'Players'
-require_relative 'Pawn'
-require_relative "Game"
-require_relative "Pawn"
 
-def input_check()
-  p 'Please enter the color of first person (B/W)'
-   input_color = gets.chomp
-   unless ['B','W'].include?input_color
-       p 'Wrong Selection!,Please enter the correct selection!'
-       input_check()
-   else
+
+def input_check
+  p 'Please enter the color of first person (Black/White)'
+  input_color = gets.chomp
+  unless ['Black','White'].include?input_color
+    p 'Wrong Selection!,Please enter the correct selection!'
+    input_check
+  else
     input_color
-   end
+  end
 end
 
-def source_check(chess_board,player_cell)
-  white_pawn = WhitePawn.new
-  black_pawn = BlackPawn.new
-  p "Please enter #{player_cell.name}'s source cell"
-  first_input = [gets.chomp.to_i, gets.chomp.to_i]
-  p "Please enter #{player_cell.name}'s destination cell"
-  second_input = [gets.chomp.to_i, gets.chomp.to_i]
-  edges_arr = [second_input[0] - first_input[0],second_input[1] - first_input[1]]
-  case player_cell
-  when Player1
-    if second_input[0] == 3 && first_input[0] == 1
-      chess_board.move(first_input, second_input)
-    elsif Player1.colour == "B"
-      unless black_pawn.edges.include? edges_arr
-        p "Incorrect Position!! Please enter a 2 valid position"
-        source_check(chess_board,player_cell)
-        return
-      end
-      unless chess_board.arr[first_input[0]][first_input[1]].match(/[\u{2654}-\u{2659}]/)
-        p "Incorrect Position!! Please enter a 3 valid position"
-        source_check(chess_board,player_cell)
-        #return
+def save_game(board,color)
+  next_color = color
+  new_arr = []
+  board.arr.each_with_index do |row, i|
+    row.each_with_index do |cell, j|
+      if board.arr[i][j]== " "
+        new_arr.push(" ")
       else
-        chess_board.move(first_input, second_input)
+        new_arr.push(board.arr[i][j].image)
       end
-    elsif Player1.colour == "W"
-      unless white_pawn.edges.include? edges_arr
-        p "Incorrect Position!! Please enter a 4 valid  position"
-        source_check(chess_board,player_cell)
-       # return
-      end
-      unless chess_board.arr[first_input[0]][first_input[1]].match(/[\u{265A}-\u{265F}]/)
-        p "Incorrect Position!! Please enter a 5 valid position"
-        source_check(chess_board,player_cell)
-       # return
-      else
-        chess_board.move(first_input, second_input)
-      end
-    else
-      p "Incorrect Position!! Please enter a 1st valid position"
-      source_check(chess_board,player_cell)
-      return
     end
-  when Player2
-    if second_input[0]==4 && first_input[0]==6
-      chess_board.move(first_input, second_input)
-    elsif Player2.colour == "B"
-      unless black_pawn.edges.include? edges_arr
-      p "Incorrect Position!! Please enter a  valid position"
-      source_check(chess_board,player_cell)
+  end
+  new_arr = new_arr.each_slice(8).to_a
+  File.open("file.yaml","w") do |file|
+      file.write(new_arr.to_yaml)
+      file.write(next_color.to_yaml)
+  end
+end
 
-      return
-      end
-      unless chess_board.arr[first_input[0]][first_input[1]].match(/[\u{2654}-\u{2659}]/)
-        p "Incorrect Position!! Please enter a 2 nd valid position"
-        source_check(chess_board,player_cell)
+def check_mate(board)
+  if board.checkmate("White") == true
+    p 'White is the winner'
+    return true
+  elsif board.checkmate("Black") == true
+      p 'Black is the winner'
+    return false
+  end
+end
 
-         # return
-      else
-        chess_board.move(first_input, second_input)
-      end
-    elsif Player2.colour == "W"
-      unless white_pawn.edges.include? edges_arr
-        p "Incorrect Position!! Please enter a 3rd valid  position"
-        source_check(chess_board,player_cell)
-        return
-      end
-      unless chess_board.arr[first_input[0]][first_input[1]].match(/[\u{265A}-\u{265F}]/)
-        p "Incorrect Position!! Please enter a 4th valid position"
-        source_check(chess_board,player_cell)
-        # return
-      else
-        chess_board.move(first_input, second_input)
-      end
-      else
-      p "Incorrect Position!! Please enter a  valid position"
-      source_check(chess_board,player_cell)
+def play_game(board,old_color,newest_color)
+  loop do
+    enter_choices(old_color,board)
+    board.show_board
+    return " White is the winner" if check_mate(board) == true
+    p " Do you wish to save the game(Y/N)"
+    choice = gets.chomp.to_s
+    if choice == 'Y'
+      save_game(board,newest_color)
+    end
+    enter_choices(newest_color,board)
+    board.show_board
+    p " Do you wish to save the game(Y/N)"
+    choice = gets.chomp.to_s
+    if choice == 'Y'
+      save_game(board,old_color)
+    end
+    return "Black is the winner" if check_mate(board) == false
+  end
+end
 
-      return
+def create_arr(demo,board)
+  if demo!= nil
+    yaml_arr= []
+    board.arr = demo
+    board.arr.each_with_index do |row, i|
+      row.each_with_index do |cell, j|
+        if board.arr[i][j] == "\u265F"
+          yaml_arr.push(Piece::WhitePawn.new(:White))
+              elsif board.arr[i][j]== "\u2659"
+                yaml_arr.push(Piece::BlackPawn.new(:Black))
+              elsif board.arr[i][j] == "\u265E"
+                yaml_arr.push(Piece::WhiteKnight.new(:White))
+              elsif board.arr[i][j] == "\u2658"
+                yaml_arr.push(Piece::BlackKnight.new(:Black))
+              elsif board.arr[i][j] == "\u265C"
+                yaml_arr.push(Piece::WhiteRook.new(:White))
+              elsif board.arr[i][j] == "\u2656"
+                yaml_arr.push(Piece::BlackRook.new(:Black))
+              elsif board.arr[i][j] == "\u265D"
+                yaml_arr.push(Piece::WhiteBishop.new(:White))
+              elsif board.arr[i][j] == "\u2657"
+                yaml_arr.push(Piece::BlackBishop.new(:Black))
+              elsif board.arr[i][j] == "\u2655"
+                yaml_arr.push(Piece::BlackQueen.new(:Black))
+              elsif board.arr[i][j] == "\u265B"
+                yaml_arr.push(Piece::WhiteQueen.new(:White))
+              elsif board.arr[i][j] == "\u2654"
+                yaml_arr.push(Piece::BlackKing.new(:Black))
+              elsif board.arr[i][j] == "\u265A"
+                yaml_arr.push(Piece::WhiteKing.new(:Black))
+              else
+                yaml_arr.push(" ")
+        end
+      end
+    end 
+    board.arr = yaml_arr.each_slice(8).to_a
+  end
+end
+
+def enter_choices(color,board)
+  p "Please enter the source cell for the #{color}'s move you wish to make"
+  source =  gets.chomp.to_sym
+  p "Please enter the destination cell for #{color}'s the move you wish to make"
+  destination = gets.chomp.to_sym
+  unless board.get(source).to_s.split('::').last.include?"#{color}"
+    p "Invalid selectionss, Please try once again"
+    enter_choices(color,board)
+  else
+    if board.move(source, destination) == "Illegal move, Please try once again"
+      p "Invalid selections, Please try once again"
+      enter_choices(color,board)
     end
   end
 end
 
+newColor = " "
+oldColor = " "
+board = Board.with_setup
+p 'Do you want to load the previous saved version (Y/N)'
+saved_version = gets.chomp.to_s
+if saved_version.downcase=="y"
+  demo = YAML.load(File.read("file.yaml"))
+  File.foreach('file.yaml') do |line|
+    if line.strip.start_with?("---")
+      if line.strip == "--- White"
+        newColor = "White"
+        oldColor = "Black"
+      elsif line.strip == "--- Black"
+        newColor = "Black"
+        oldColor = "White"
+      end
+    end
+  end
+  create_arr(demo,board)
+  play_game(board,newColor,oldColor)
+end
 p 'Please enter the first players name '
 Player1 = Players.new(gets.chomp,input_check)
 p 'Please enter the second players name'
 case Player1.colour
-when 'B'
-  Player2 = Players.new(gets.chomp, 'W')
-when 'W'
-  Player2 = Players.new(gets.chomp, 'B')
+when 'Black'
+  Player2 = Players.new(gets.chomp, 'White')
+when 'White'
+  Player2 = Players.new(gets.chomp, 'Black')
 end
-chess_board = Board.new
-source_check(chess_board,Player1)
-source_check(chess_board,Player2)
-chess_board.show_board
-source_check(chess_board,Player1)
-source_check(chess_board,Player2)
-# # chess_board.move([6, 1], [5, 1])
-# # chess_board.move([2, 0], [3, 0])
-# # chess_board.move([5, 1], [4, 1])
-# # chess_board.move([3, 0], [4, 1])
- chess_board.show_board
+old_color = Player1.colour
+newest_color = Player2.colour
+play_game(board,old_color,newest_color)
+ 
