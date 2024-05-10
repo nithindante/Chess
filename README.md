@@ -10,3 +10,5 @@ Used Serialisation to save data to a YAML file, so that the board and the previo
 After throwing the error message, it asks for the input again until the correct input is sent 
 
 One can exit from the Game by entering nil values when asked for Source and Destination 
+
+Please clone the repo and run Main.rb, then one will be able to play the game, Enter the choices as per requests from the system/game 
