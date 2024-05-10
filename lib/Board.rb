@@ -200,16 +200,10 @@ class Board
   end
 
   def check_pawn(color, source_cell, destination_cell)
-    p self.get(destination_cell)
-    p  self.get(destination_cell).class.to_s.split('::').last
     if self.get(destination_cell).class.to_s.split('::').last.include?(color)
-      # return false unless column(destination_cell) - column(source_cell) == 0
-      # true
       if column(destination_cell) - column(source_cell) == 0
-        p "andi"
         return true
       else
-        p "kundi"
         return false
       end
     elsif self.get(destination_cell).class.to_s.split('::').last == " "
@@ -219,11 +213,8 @@ class Board
         return true
       end
     else
-      p "fucking"
       return false
     end
-
-
   end
 
   def check_rook(source_cell, destination_cell)

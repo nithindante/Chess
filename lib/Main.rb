@@ -38,7 +38,7 @@ def check_mate(board)
     p 'White is the winner'
     return true
   elsif board.checkmate("Black") == true
-      p 'Black is the winner'
+    p 'Black is the winner'
     return false
   end
 end
